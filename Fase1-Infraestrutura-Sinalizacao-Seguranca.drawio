@@ -1,0 +1,111 @@
+<mxfile host="65bd71144e">
+    <diagram id="Fase1InfraestruturaSinalizacao" name="Fase 1 - Infraestrutura de Sinalização e Segurança">
+        <mxGraphModel dx="1216" dy="2479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1700" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Device" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="40" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="API REST\n(Express)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="40" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Auth Layer\n(JWT + Device Validation)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="40" width="240" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="HTTPS / TLS\n(port 443)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="40" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="WSS Server\n(WebSocket Secure)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="1120" y="40" width="210" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Fase 1: Obtenção de Ticket (REST)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef4ff;strokeColor=#4d7cff;fontSize=14;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="120" width="1310" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="[Device] 1. POST /device/ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="190" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="[Device] Headers:\n- Content-Type: application/json\nBody: { deviceId, secret }" style="text;html=1;align=left;verticalAlign=top;fontSize=11;" parent="11" vertex="1">
+                    <mxGeometry x="10" y="10" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="13" target="14" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="[API REST] 2. validateDeviceMiddleware(req)\n- load device record\n- compare secret hash\n- reject if invalid" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="510" y="180" width="260" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="[Auth Layer] 3. jwt.sign({\n  deviceId,\n  type:&#39;device_ticket&#39;,\n  iat,\n  exp: now + 30s\n})" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="990" y="180" width="280" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="[API REST] 4. Response 200 OK\nBody: { token: JWT }" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="1000" y="340" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="&lt;span style=&quot;background-color: light-dark(rgb(255, 242, 204), rgb(237, 237, 237));&quot;&gt;[Auth Layer] - short-lived exp 30s\n- replay protection\n- no server session state&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=top;fontSize=11;" parent="15" vertex="1">
+                    <mxGeometry x="10" y="10" width="240" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="Fase 2: Conexão WSS (Handshake)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef7e7;strokeColor=#2d8f45;fontSize=14;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="460" width="1310" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="82" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="18" target="19" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="[Device] 5. Device abre wss://server?token=JWT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="1000" y="540" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="19" target="20" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="[HTTPS/TLS] 6. HTTPS/TLS handshake\n- TCP connection\n- ClientHello / ServerHello\n- Certificate + Finished\n- channel cifrado" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="520" width="260" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" style="edgeStyle=none;html=1;" parent="1" source="20" target="22" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="[WSS] 7. HTTP Upgrade -&gt; WebSocket\nHeaders: Connection: Upgrade,\nUpgrade: websocket,\nSec-WebSocket-Key, Origin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="520" width="260" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Fase 3: Validação e Autorização" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0e6;strokeColor=#d97706;fontSize=14;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="720" width="1310" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="[WSS] 8. extract token from req.url\n(token query param)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="810" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Fase 4: Conexão Estabelecida" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f7ff;strokeColor=#0b69d4;fontSize=14;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="1300" width="1310" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="[WSS] 18. 101 Switching Protocols\nWSS OPEN state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1360" width="260" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="[WSS] 19. Canal autenticado pronto\n- TLS ativo\n- WSS stateful\n- ready for SDP / ICE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="1360" width="340" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="[WSS] Estados da conexão" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="720" y="1360" width="610" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="NOT_STARTED → HANDSHAKE → AUTHENTICATED → OPEN → CLOSED" style="text;html=1;align=left;verticalAlign=top;fontSize=11;" parent="37" vertex="1">
+                    <mxGeometry x="10" y="10" width="590" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="Note: HTTPS/TLS deve rodar apenas em porta 443\nWSS exige secure context\ne certificado válido" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#7d7d7d;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1210" y="240" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="14" target="15" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="16" target="18" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="13" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="300" y="240" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="90" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.419;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="2" target="11" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="Abstração:&lt;div&gt;INTERFONE(Device) → quer se conectar → SERVIDOR valida → conexão segura estabelecida&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="30" y="-60" width="1260" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

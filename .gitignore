@@ -1,0 +1,11 @@
+node_modules/
+.env
+src/certs/
+*.pem
+*.key
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+nodemon.json
